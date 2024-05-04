@@ -1,4 +1,4 @@
-import db from "@/app/db";
+import db from "@/db";
 import React from "react";
 import { redirect } from "next/navigation";
 
@@ -12,6 +12,7 @@ export default function SnippetCreatePage() {
     const code = formData.get("code") as string;
 
     //create a new record in the database
+    //TODO: implement the api call to the backend and save the snippet via api
     const snippetToBeCreated = await db.snippet.create({
       data: {
         title,
