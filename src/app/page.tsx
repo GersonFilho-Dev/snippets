@@ -1,4 +1,5 @@
 import db from "@/db";
+import Link from "next/link";
 
 export default async function Home() {
   //TODO: implement the api call to fetch all the snippets
@@ -6,17 +7,28 @@ export default async function Home() {
   const snippets = await db.snippet.findMany();
 
   const renderedSnippets = snippets.map((snippet) => {
-    return <div key={snippet.id}>{snippet.title}</div>;
+    return (
+      <Link
+        key={snippet.id}
+        href={`/snippets/${snippet.id}`}
+        className="flex justify-between items-center p-2 border rounded"
+      >
+        <div>{snippet.title}</div>
+        <div>View</div>
+      </Link>
+    );
   });
 
   return (
-    <main className="flex justify-center items-center bg-slate-100 w-3/4 h-3/4 mx-auto">
-      <div className="flex items-center justify-between">
-        <h1 className="mr-2">Snippets</h1>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Create
-        </button>
+    <div>
+      <div className="flex m-2 justify-between items-center">
+        <h1 className="text text-xl font-bold">Snippets</h1>
+        <Link href="/snippets/new" className="border p-2 rounded">
+          New
+        </Link>
       </div>
-    </main>
+
+      <div className="flex flex-col gap-2">{renderedSnippets}</div>
+    </div>
   );
 }
