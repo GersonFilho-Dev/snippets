@@ -1,6 +1,8 @@
 import db from "@/db";
 import { notFound } from "next/navigation";
 import React from "react";
+import Link from "next/link";
+import * as actions from "@/actions";
 
 interface SnippetShowPageProps {
   params: {
@@ -23,11 +25,31 @@ export default async function SnippetShowPage(props: SnippetShowPageProps) {
     return notFound();
   }
 
+  //TODO: implement confirmation modal to delete function
+  const deleteSnippetAction = actions.deleteSnippet.bind(null, snippet.id);
+
   return (
     <div>
-      <h3>{snippet.id}</h3>
-      <h3>{snippet.title}</h3>
-      <h3>{snippet.code}</h3>
+      <div className="flex m-4 justify-between items-center">
+        <h1 className="text-xl font-bold">{snippet.title}</h1>
+        <div className="flex gap-4">
+          <Link
+            href={`/snippets/${snippet.id}/edit`}
+            className="p-2 border rounded bg-orange-200 border-orange-400 w-36 text-center"
+          >
+            Edit
+          </Link>
+          <form action={deleteSnippetAction}>
+            <button className="p-2 border rounded bg-blue-200 border-blue-400 w-36">
+              Delete
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <pre className="p-3 border rounded bg-gray-300 border-gray-600">
+        <code>{snippet.code}</code>
+      </pre>
     </div>
   );
 }
